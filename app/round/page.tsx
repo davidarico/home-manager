@@ -29,6 +29,7 @@ const locations = [
   { id: "trash", name: "Trash", options: ["Take Out"] },
   { id: "recycle", name: "Recycle", options: ["Take Out"] },
   { id: "livingRoom", name: "Living Room", options: ["Needs Cleaning", "Organize"] },
+  { id: "guestBathroom", name: "Guest Bathroom", options: ["Needs Cleaning", "Organize"] },
   { id: "mainStairs", name: "Main Stairs", options: ["Needs Cleaning"] },
   { id: "entryway", name: "Entryway", options: ["Needs Cleaning", "Organize"] },
 ]
