@@ -8,7 +8,6 @@ import { Play, Pause, SkipForward, Home } from "lucide-react"
 import Link from "next/link"
 
 // Define the stretches
-// This is easily editable for future modifications
 const stretches = [
   { name: "Neck Rolls", duration: 30, description: "Slowly roll your neck in a circular motion" },
   { name: "Neck Side Stretch (Left)", duration: 30, description: "Tilt your head to the left side" },
@@ -37,12 +36,12 @@ const stretches = [
   { name: "Cross Body Shoulder Stretch (Right)", duration: 30, description: "Bring your right arm across your body" },
 ]
 
-// Add a function to calculate the total duration
+// Calculate the total duration of the stretches
 const calculateTotalDuration = () => {
   return stretches.reduce((total, stretch) => total + stretch.duration, 0)
 }
 
-// Format the total duration
+// Format the total stretch duration
 const formatTotalDuration = () => {
   const totalSeconds = calculateTotalDuration()
   const minutes = Math.floor(totalSeconds / 60)
@@ -150,7 +149,7 @@ export default function Stretch() {
           <CardContent className="space-y-6">
             <div className="text-center text-4xl font-bold text-amber-500">{formatTime(timeLeft)}</div>
 
-            <Progress value={progress} className="h-2 bg-amber-950/30" indicatorClassName="bg-amber-500" />
+            <Progress value={progress} className="h-2 bg-amber-950/30" />
 
             <div className="text-center text-secondary">{stretches[currentIndex].description}</div>
           </CardContent>
