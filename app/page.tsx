@@ -6,6 +6,13 @@ import TodayRound from "@/components/today-round"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function Home() {
+  // Format today's date
+  const today = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric'
+  }).format(new Date())
+
   return (
     <main className="flex min-h-screen flex-col items-center p-4 bg-background">
       <div className="w-full max-w-md mx-auto space-y-6 mt-6">
@@ -18,7 +25,10 @@ export default function Home() {
         <Card className="border-amber-800/50 bg-card">
           <CardHeader className="pb-3">
             <div className="flex justify-between items-center">
-              <CardTitle className="text-amber-400">Today's Round</CardTitle>
+              <div>
+                <CardTitle className="text-amber-400">Today's Round</CardTitle>
+                <p className="text-sm text-amber-400/70 mt-1">{today}</p>
+              </div>
               <Link href="/round">
                 <Button variant="outline" size="sm" className="border-amber-600 text-amber-400 hover:bg-amber-950/30">
                   Edit Round
