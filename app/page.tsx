@@ -3,11 +3,12 @@ import { Button } from "@/components/ui/button"
 import { Repeat, Dumbbell, Clock, Check } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import TodayRound from "@/components/today-round"
+import { useIsMobile } from "@/hooks/use-mobile"
 
-export default async function Home() {
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center p-6 bg-background">
-      <div className="w-full max-w-md mx-auto space-y-8 mt-10">
+    <main className="flex min-h-screen flex-col items-center p-4 bg-background">
+      <div className="w-full max-w-md mx-auto space-y-6 mt-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-amber-500">Home Manager</h1>
           <p className="text-secondary mt-2">Manage your household tasks and routines</p>
@@ -35,12 +36,12 @@ export default async function Home() {
             <Button
               variant="outline"
               size="lg"
-              className="w-full h-20 text-lg justify-start gap-4 border-amber-600 hover:bg-amber-950/30"
+              className="w-full h-auto min-h-[5rem] py-3 text-lg justify-start gap-3 border-amber-600 hover:bg-amber-950/30"
             >
-              <Repeat className="h-6 w-6 text-amber-500" />
-              <div className="text-left">
-                <div className="font-medium text-amber-400">Daily Round</div>
-                <div className="text-sm text-secondary">Check what needs to be done around the house</div>
+              <Repeat className="h-6 w-6 flex-shrink-0 text-amber-500" />
+              <div className="text-left overflow-hidden">
+                <div className="font-medium text-amber-400 truncate">Daily Round</div>
+                <div className="text-sm text-secondary line-clamp-2">Check tasks around the house</div>
               </div>
             </Button>
           </Link>
@@ -49,12 +50,12 @@ export default async function Home() {
             <Button
               variant="outline"
               size="lg"
-              className="w-full h-20 text-lg justify-start gap-4 border-amber-600 hover:bg-amber-950/30"
+              className="w-full h-auto min-h-[5rem] py-3 text-lg justify-start gap-3 border-amber-600 hover:bg-amber-950/30"
             >
-              <Clock className="h-6 w-6 text-amber-500" />
-              <div className="text-left">
-                <div className="font-medium text-amber-400">Round History</div>
-                <div className="text-sm text-secondary">View previous days' rounds</div>
+              <Clock className="h-6 w-6 flex-shrink-0 text-amber-500" />
+              <div className="text-left overflow-hidden">
+                <div className="font-medium text-amber-400 truncate">Round History</div>
+                <div className="text-sm text-secondary line-clamp-2">View previous days' rounds</div>
               </div>
             </Button>
           </Link>
@@ -63,12 +64,12 @@ export default async function Home() {
             <Button
               variant="outline"
               size="lg"
-              className="w-full h-20 text-lg justify-start gap-4 border-amber-600 hover:bg-amber-950/30"
+              className="w-full h-auto min-h-[5rem] py-3 text-lg justify-start gap-3 border-amber-600 hover:bg-amber-950/30"
             >
-              <Dumbbell className="h-6 w-6 text-amber-500" />
-              <div className="text-left">
-                <div className="font-medium text-amber-400">Stretch Routine</div>
-                <div className="text-sm text-secondary">Neck and shoulder stretch routine</div>
+              <Dumbbell className="h-6 w-6 flex-shrink-0 text-amber-500" />
+              <div className="text-left overflow-hidden">
+                <div className="font-medium text-amber-400 truncate">Stretch Routine</div>
+                <div className="text-sm text-secondary line-clamp-2">Neck and shoulder stretch routine</div>
               </div>
             </Button>
           </Link>

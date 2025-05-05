@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight, Home, Save } from "lucide-react"
 import Link from "next/link"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 // Change the locations array to have consistent options for most locations
 const locations = [
@@ -40,6 +41,7 @@ export default function Round() {
   const [roundData, setRoundData] = useState<RoundData>({})
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const isMobile = useIsMobile()
   
   // Load today's round data on initial load
   useEffect(() => {
@@ -233,19 +235,43 @@ export default function Round() {
             </CardHeader>
             <CardContent className="space-y-4">
               {currentLocation.options.length > 0 && (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {currentLocation.options.map((option) => (
-                    <div key={option} className="flex items-center space-x-2">
+                    <div 
+                      key={option} 
+                      className="flex items-center space-x-3 p-2 rounded hover:bg-amber-950/20"
+                      onClick={() => handleOptionToggle(option)}
+                    >
+                      <div className={`flex items-center justify-center ${isMobile ? 'h-6 w-6' : 'h-4 w-4'} border rounded-sm border-amber-600 ${
+                        roundData[currentLocation.id]?.options?.includes(option)
+                        ? 'bg-amber-600'
+                        : 'bg-amber-950/30'
+                      }`}>
+                        {roundData[currentLocation.id]?.options?.includes(option) && (
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            className={`${isMobile ? 'h-5 w-5' : 'h-3 w-3'} text-amber-950`} 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <Label 
+                        htmlFor={`${currentLocation.id}-${option}`} 
+                        className="text-secondary flex-grow cursor-pointer"
+                      >
+                        {option}
+                      </Label>
                       <input
                         type="checkbox"
                         id={`${currentLocation.id}-${option}`}
                         checked={roundData[currentLocation.id]?.options?.includes(option) || false}
                         onChange={() => handleOptionToggle(option)}
-                        className="h-4 w-4 rounded border-amber-600 text-amber-600 focus:ring-amber-600 bg-amber-950/30"
+                        className="sr-only" // Hidden but accessible
                       />
-                      <Label htmlFor={`${currentLocation.id}-${option}`} className="text-secondary">
-                        {option}
-                      </Label>
                     </div>
                   ))}
                 </div>
@@ -261,6 +287,7 @@ export default function Round() {
                   value={roundData[currentLocation.id]?.notes || ""}
                   onChange={handleNotesChange}
                   className="mt-1 bg-amber-950/20 border-amber-800/50 focus:border-amber-600 placeholder:text-amber-800/50"
+                  rows={isMobile ? 4 : 3}
                 />
               </div>
             </CardContent>
