@@ -31,6 +31,14 @@ CREATE TABLE IF NOT EXISTS location_options (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
+-- Create authentication table to store site password
+CREATE TABLE IF NOT EXISTS auth_settings (
+    id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1), -- Ensures only one row
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
 -- Create an index to improve query performance
 CREATE INDEX IF NOT EXISTS idx_location_checks_round_id ON location_checks(round_id);
 CREATE INDEX IF NOT EXISTS idx_location_options_location_check_id ON location_options(location_check_id);
@@ -52,5 +60,10 @@ EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_location_options_updated_at
 BEFORE UPDATE ON location_options
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_auth_settings_updated_at
+BEFORE UPDATE ON auth_settings
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
