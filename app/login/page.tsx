@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,8 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function LoginPage() {
+// Component that uses searchParams
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isSetupMode, setIsSetupMode] = useState(false);
@@ -96,52 +97,77 @@ export default function LoginPage() {
   };
 
   return (
+    <Card className="w-full max-w-md shadow-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl text-center">
+          {isSetupMode ? 'Create Password' : 'Login to Household Manager'}
+        </CardTitle>
+        <CardDescription className="text-center">
+          {isSetupMode 
+            ? 'Set up a password that everyone who needs access will know'
+            : 'Enter the shared password to access the system'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="password" 
+                      placeholder={isSetupMode ? "Create a password" : "Enter password"} 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full">
+              {isSetupMode ? 'Create Password' : 'Login'}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="flex justify-center">
+        {isSetupMode && (
+          <p className="text-sm text-muted-foreground">
+            This password will be shared with all authorized users.
+          </p>
+        )}
+      </CardFooter>
+    </Card>
+  );
+}
+
+// Loading fallback for Suspense
+function LoginLoading() {
+  return (
+    <Card className="w-full max-w-md shadow-lg">
+      <CardHeader>
+        <CardTitle className="text-2xl text-center">Loading...</CardTitle>
+        <CardDescription className="text-center">
+          Please wait while we prepare the login page
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex justify-center p-8">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-amber-500"></div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className="flex min-h-screen items-center justify-center bg-gray-900">
-      <Card className="w-full max-w-md shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center">
-            {isSetupMode ? 'Create Password' : 'Login to Household Manager'}
-          </CardTitle>
-          <CardDescription className="text-center">
-            {isSetupMode 
-              ? 'Set up a password that everyone who needs access will know'
-              : 'Enter the shared password to access the system'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="password" 
-                        placeholder={isSetupMode ? "Create a password" : "Enter password"} 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                {isSetupMode ? 'Create Password' : 'Login'}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          {isSetupMode && (
-            <p className="text-sm text-muted-foreground">
-              This password will be shared with all authorized users.
-            </p>
-          )}
-        </CardFooter>
-      </Card>
+      <Suspense fallback={<LoginLoading />}>
+        <LoginForm />
+      </Suspense>
     </div>
   );
 }
